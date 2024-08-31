@@ -27,7 +27,7 @@ const Navigation = () => {
           isLoggedIn ? "justify-between" : "justify-center"
         } items-center bg-blue-500 max-w-[1440px] mx-auto`}
       >
-        <Header title="TODOS APP WITH NODE.JS" />
+        <Header title="Todos App With Node.js" />
         <Toaster />
         {isLoggedIn ? (
           <Link
