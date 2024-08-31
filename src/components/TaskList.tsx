@@ -130,6 +130,7 @@ const TaskList = ({
                       className={`md:w-[230px] p-2 border border-r-0 rounded-l text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
                         task.completed ? "line-through" : ""
                       }`}
+                      required
                     />
                     <input
                       type="text"
@@ -152,6 +153,7 @@ const TaskList = ({
                       className={`flex-grow p-2 border text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
                         task.completed ? "line-through" : ""
                       }`}
+                      required
                     />
                   </div>
                   <div className="mx-2 max-md:flex max-md:flex-col max-md:gap-2">

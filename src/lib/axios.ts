@@ -23,11 +23,24 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 403) {
-      // Token is expired or invalid
-      deleteCookie("token"); // Remove the expired token
-      toast.error("Your session has expired. Please log in again."); // Use hot-toast
-      Router.push("/login"); // Redirect to login page
+    if (error.response) {
+      if (error.response.status === 403) {
+        // Token is expired or invalid
+        deleteCookie("token");
+        toast.error("Your session has expired. Please log in again.");
+        Router.push("/login");
+      } else {
+        // Handle other API errors
+        const errorMessage =
+          error.response.data?.error ||
+          "An error occurred while calling the API";
+        toast.error(errorMessage);
+      }
+    } else {
+      // Handle network errors or other issues
+      toast.error(
+        "Unable to connect to the server. Please check your internet connection."
+      );
     }
     return Promise.reject(error);
   }
