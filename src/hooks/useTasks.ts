@@ -21,8 +21,10 @@ export const useTasks = (queryParams: Record<string, any> = {}) => {
   const token = getCookie("token");
 
   return useQuery<{ tasks: Task[]; pagination: Pagination }, Error>({
-    queryKey: ["tasks", token, queryParams],
+    queryKey: ["tasks", queryParams.page],
     queryFn: () => fetchTasks(queryParams),
     enabled: Boolean(token),
+    staleTime: 0,
+    gcTime: 0,
   });
 };
