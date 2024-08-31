@@ -21,24 +21,26 @@ const Navigation = () => {
   };
 
   return (
-    <nav
-      className={`mb-8 md:px-12 px-4 py-4 flex ${
-        isLoggedIn ? "justify-between" : "justify-center"
-      } items-center bg-blue-500`}
-    >
-      <Header title="TODOS APP WITH NODE.JS" />
-      <Toaster />
-      {isLoggedIn ? (
-        <Link
-          href="/logout"
-          onClick={handleClickLogout}
-          className="text-blue-500 bg-white px-4 py-2 rounded-md hover:opacity-80 hover:transition-opacity font-medium"
-          as={"button"}
-          type="button"
-        >
-          Logout
-        </Link>
-      ) : null}
+    <nav className="bg-blue-500">
+      <div
+        className={`mb-8 md:px-12 px-4 py-4 flex ${
+          isLoggedIn ? "justify-between" : "justify-center"
+        } items-center bg-blue-500 max-w-7xl mx-auto`}
+      >
+        <Header title="TODOS APP WITH NODE.JS" />
+        <Toaster />
+        {isLoggedIn ? (
+          <Link
+            href="/logout"
+            onClick={handleClickLogout}
+            className="text-blue-500 bg-white px-4 py-2 rounded-md hover:opacity-80 hover:transition-opacity font-medium"
+            as={"button"}
+            type="button"
+          >
+            Logout
+          </Link>
+        ) : null}
+      </div>
     </nav>
   );
 };
