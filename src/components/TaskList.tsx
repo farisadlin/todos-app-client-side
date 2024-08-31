@@ -1,6 +1,6 @@
 import { Pagination, Task } from "@/types";
 import ReactPaginate from "react-paginate";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaEdit, FaSave, FaTrash, FaPlus } from "react-icons/fa";
 
 interface TaskListProps {
@@ -31,6 +31,26 @@ const TaskList = ({
   const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const [editedTask, setEditedTask] = useState<Task | null>(null);
+  const editInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        editingTaskId !== null &&
+        editInputRef.current &&
+        !editInputRef.current.contains(event.target as Node) &&
+        editedTask
+      ) {
+        handleEditTask(editedTask);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingTaskId, editedTask]);
 
   const handleAddTask = () => {
     if (newTaskTitle.trim() && newTaskDescription.trim()) {
@@ -41,8 +61,14 @@ const TaskList = ({
   };
 
   const handleEditTask = (task: Task) => {
-    setEditingTaskId(task.id);
-    setEditedTask({ ...task });
+    if (editingTaskId === task.id) {
+      onEditTask(task.id, task.title, task.description);
+      setEditingTaskId(null);
+      setEditedTask(null);
+    } else {
+      setEditingTaskId(task.id);
+      setEditedTask({ ...task });
+    }
   };
 
   const handleSaveTask = () => {
@@ -82,7 +108,10 @@ const TaskList = ({
                     }
                     className="ml-2 mr-4"
                   />
-                  <div className="flex flex-grow max-md:flex-col">
+                  <div
+                    className="flex flex-grow max-md:flex-col"
+                    ref={editingTaskId === task.id ? editInputRef : null}
+                  >
                     <input
                       type="text"
                       value={
