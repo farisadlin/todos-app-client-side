@@ -172,7 +172,7 @@ const TaskList = ({
                   handleAddTask();
                 }
               }}
-              className="p-2 border md:border-r-0 rounded-t md:rounded-t-none md:rounded-l text-black flex-grow md:max-w-[270px] mb-2 md:mb-0"
+              className="p-2 border md:border-r-0 rounded-t md:rounded-r-none md:rounded-l text-black flex-grow md:max-w-[270px] md:mb-0"
               placeholder="Enter task title"
               required
             />
@@ -187,7 +187,7 @@ const TaskList = ({
                   handleAddTask();
                 }
               }}
-              className="p-2 border text-black flex-grow mb-2 md:mb-0"
+              className="p-2 border text-black flex-grow md:mb-0"
               placeholder="Enter task description"
               required
             />

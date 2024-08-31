@@ -102,7 +102,7 @@ export default function HomeContent() {
   return (
     <>
       <Navigation />
-      <div className="max-md:mx-4">
+      <div className="max-md:mx-4 max-md:pb-6">
         {isLoading ? (
           <Spinner />
         ) : error ? (
