@@ -4,34 +4,35 @@ import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { useState, useEffect } from "react"; // Add this import
+import Header from "./Header";
 
-interface NavigationProps {
-  isLoggedIn: boolean;
-}
-
-const Navigation: React.FC<NavigationProps> = ({
-  isLoggedIn: initialIsLoggedIn,
-}) => {
-  const { handleLogout } = useAuth();
+const Navigation = () => {
+  const { token, handleLogout } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsLoggedIn(initialIsLoggedIn);
-  }, [initialIsLoggedIn]);
+    setIsLoggedIn(Boolean(token));
+  }, [token]);
 
-  const handleClickLogout = () => {
+  const handleClickLogout = async () => {
+    await handleLogout();
+    setIsLoggedIn(false);
     toast.success("Logout successful");
-    handleLogout();
   };
 
   return (
-    <nav className="mb-8 md:px-12 py-4 flex justify-end">
+    <nav
+      className={`mb-8 md:px-12 px-4 py-4 flex ${
+        isLoggedIn ? "justify-between" : "justify-center"
+      } items-center bg-blue-500`}
+    >
+      <Header title="TODOS APP WITH NODE.JS" />
       <Toaster />
       {isLoggedIn ? (
         <Link
           href="/logout"
           onClick={handleClickLogout}
-          className="text-blue-500 bg-white px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white hover:transition-colors"
+          className="text-blue-500 bg-white px-4 py-2 rounded-md hover:opacity-80 hover:transition-opacity"
           as={"button"}
           type="button"
         >

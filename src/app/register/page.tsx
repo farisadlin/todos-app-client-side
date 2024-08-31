@@ -9,6 +9,7 @@ import Spinner from "@/components/Spinner";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import AuthLayout from "../layouts/AuthLayout";
+import Navigation from "@/components/Navigation";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -38,38 +39,41 @@ export default function Register() {
   };
 
   return (
-    <AuthLayout title="Register">
-      <form onSubmit={handleSubmit} className="w-full max-w-xs">
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-2 mb-4 border rounded text-black"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-4 border rounded text-black"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full p-2 bg-blue-500 text-white rounded flex justify-center items-center"
-          disabled={registerMutation.isPending}
-        >
-          {registerMutation.isPending ? <Spinner /> : "Register"}
-        </button>
-      </form>
-      <p className="mt-4">
-        Already have an account?{" "}
-        <Link href="/login" className="text-blue-500">
-          Login
-        </Link>
-      </p>
-    </AuthLayout>
+    <>
+      <Navigation />
+      <AuthLayout title="Register">
+        <form onSubmit={handleSubmit} className="w-full max-w-xs">
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-2 mb-4 border rounded text-black"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-2 mb-4 border rounded text-black"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full p-2 bg-blue-500 text-white rounded flex justify-center items-center"
+            disabled={registerMutation.isPending}
+          >
+            {registerMutation.isPending ? <Spinner /> : "Register"}
+          </button>
+        </form>
+        <p className="mt-4">
+          Already have an account?{" "}
+          <Link href="/login" className="text-blue-500">
+            Login
+          </Link>
+        </p>
+      </AuthLayout>
+    </>
   );
 }

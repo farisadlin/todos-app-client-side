@@ -1,18 +1,15 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
 import { useTasks } from "@/hooks/useTasks";
 import TaskList from "@/components/TaskList";
-import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
 import Spinner from "@/components/Spinner";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import Navigation from "./Navigation";
 
 export default function HomeContent() {
-  const { token } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") || "1");
@@ -103,31 +100,32 @@ export default function HomeContent() {
   }
 
   return (
-    <div className="max-md:mx-4">
-      <Navigation isLoggedIn={Boolean(token)} />
-      <Header title="TODOS APP WITH NODE.JS" />
-      {isLoading ? (
-        <Spinner />
-      ) : error ? (
-        <p>Error fetching tasks</p>
-      ) : (
-        <TaskList
-          onAddTask={handleAddTask}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteTask}
-          onUpdateTaskStatus={handleUpdateTaskStatus}
-          tasks={data?.tasks}
-          pagination={
-            data?.pagination ?? {
-              current_page: page,
-              total_pages: 1,
-              total_items: 1,
-              items_per_page: 1,
+    <>
+      <Navigation />
+      <div className="max-md:mx-4">
+        {isLoading ? (
+          <Spinner />
+        ) : error ? (
+          <p>Error fetching tasks</p>
+        ) : (
+          <TaskList
+            onAddTask={handleAddTask}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+            onUpdateTaskStatus={handleUpdateTaskStatus}
+            tasks={data?.tasks}
+            pagination={
+              data?.pagination ?? {
+                current_page: page,
+                total_pages: 1,
+                total_items: 1,
+                items_per_page: 1,
+              }
             }
-          }
-          onPageChange={handlePageChange}
-        />
-      )}
-    </div>
+            onPageChange={handlePageChange}
+          />
+        )}
+      </div>
+    </>
   );
 }

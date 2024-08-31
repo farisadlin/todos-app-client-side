@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import { setCookie } from "cookies-next";
 import AuthLayout from "../layouts/AuthLayout";
+import Navigation from "@/components/Navigation";
 
 interface LoginResponse {
   token: string;
@@ -46,38 +47,41 @@ export default function Login() {
   };
 
   return (
-    <AuthLayout title="Login">
-      <form onSubmit={handleLogin} className="w-full max-w-xs">
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-2 mb-4 border rounded text-black"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-4 border rounded text-black"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full p-2 bg-blue-500 text-white rounded flex justify-center items-center"
-          disabled={loginMutation.isPending}
-        >
-          {loginMutation.isPending ? <Spinner /> : "Login"}
-        </button>
-      </form>
-      <p className="mt-4">
-        Don&apos;t have an account?{" "}
-        <Link href="/register" className="text-blue-500">
-          Register
-        </Link>
-      </p>
-    </AuthLayout>
+    <>
+      <Navigation />
+      <AuthLayout title="Login">
+        <form onSubmit={handleLogin} className="w-full max-w-xs">
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-2 mb-4 border rounded text-black"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-2 mb-4 border rounded text-black"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full p-2 bg-blue-500 text-white rounded flex justify-center items-center"
+            disabled={loginMutation.isPending}
+          >
+            {loginMutation.isPending ? <Spinner /> : "Login"}
+          </button>
+        </form>
+        <p className="mt-4">
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="text-blue-500">
+            Register
+          </Link>
+        </p>
+      </AuthLayout>
+    </>
   );
 }
