@@ -62,6 +62,11 @@ const TaskList = ({
 
   const handleEditTask = (task: Task) => {
     if (editingTaskId === task.id) {
+      // Check if title or description is empty
+      if (task.title.trim() === "" || task.description.trim() === "") {
+        // Optionally, you can add some user feedback here
+        return;
+      }
       onEditTask(task.id, task.title, task.description);
       setEditingTaskId(null);
       setEditedTask(null);
@@ -167,6 +172,7 @@ const TaskList = ({
                           }
                         }}
                         className="bg-blue-500 text-white p-2 rounded md:mr-2"
+                        type="submit"
                       >
                         {editingTaskId === task.id ? <FaSave /> : <FaEdit />}
                       </button>
