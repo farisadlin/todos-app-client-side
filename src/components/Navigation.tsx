@@ -25,7 +25,7 @@ const Navigation = () => {
       <div
         className={`mb-8 md:px-12 px-4 py-4 flex ${
           isLoggedIn ? "justify-between" : "justify-center"
-        } items-center bg-blue-500 max-w-7xl mx-auto`}
+        } items-center bg-blue-500 max-w-[1440px] mx-auto`}
       >
         <Header title="TODOS APP WITH NODE.JS" />
         <Toaster />
