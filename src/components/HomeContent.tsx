@@ -103,7 +103,7 @@ export default function HomeContent() {
   }
 
   return (
-    <>
+    <div className="max-md:mx-4">
       <Navigation isLoggedIn={Boolean(token)} />
       <Header title="TODOS APP WITH NODE.JS" />
       {isLoading ? (
@@ -128,6 +128,6 @@ export default function HomeContent() {
           onPageChange={handlePageChange}
         />
       )}
-    </>
+    </div>
   );
 }

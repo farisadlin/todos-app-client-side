@@ -82,7 +82,7 @@ const TaskList = ({
                     }
                     className="ml-2 mr-4"
                   />
-                  <div className="flex flex-grow">
+                  <div className="flex flex-grow max-md:flex-col">
                     <input
                       type="text"
                       value={
@@ -98,7 +98,7 @@ const TaskList = ({
                       onKeyDown={(e) => handleKeyDown(e, task)}
                       readOnly={editingTaskId !== task.id}
                       disabled={editingTaskId !== task.id}
-                      className={`w-[270px] p-2 border border-r-0 rounded-l text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                      className={`md:w-[230px] p-2 border border-r-0 rounded-l text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
                         task.completed ? "line-through" : ""
                       }`}
                     />
@@ -125,7 +125,7 @@ const TaskList = ({
                       }`}
                     />
                   </div>
-                  <div className="mx-2">
+                  <div className="mx-2 max-md:flex max-md:flex-col max-md:gap-2">
                     {!task.completed && (
                       <button
                         onClick={() => {
@@ -135,7 +135,7 @@ const TaskList = ({
                             handleEditTask(task);
                           }
                         }}
-                        className="bg-blue-500 text-white p-2 rounded mr-2"
+                        className="bg-blue-500 text-white p-2 rounded md:mr-2"
                       >
                         {editingTaskId === task.id ? <FaSave /> : <FaEdit />}
                       </button>
@@ -158,8 +158,10 @@ const TaskList = ({
         </ul>
 
         <div className="mt-4">
-          <h2 className="text-xl font-bold mb-2">Add New Task</h2>
-          <div className="flex">
+          <h2 className="text-xl font-bold mb-2 max-md:text-center">
+            Add New Task
+          </h2>
+          <div className="flex flex-col md:flex-row">
             <input
               ref={titleInputRef}
               type="text"
@@ -170,7 +172,7 @@ const TaskList = ({
                   handleAddTask();
                 }
               }}
-              className="p-2 border border-r-0 rounded-l text-black flex-grow w-[10px]"
+              className="p-2 border md:border-r-0 rounded-t md:rounded-t-none md:rounded-l text-black flex-grow md:max-w-[270px] mb-2 md:mb-0"
               placeholder="Enter task title"
               required
             />
@@ -185,13 +187,13 @@ const TaskList = ({
                   handleAddTask();
                 }
               }}
-              className="p-2 border text-black flex-grow"
+              className="p-2 border text-black flex-grow mb-2 md:mb-0"
               placeholder="Enter task description"
               required
             />
             <button
               onClick={handleAddTask}
-              className="bg-green-500 text-white px-4 py-2 rounded-r"
+              className="bg-green-500 text-white px-4 py-2 rounded-b md:rounded-b-none md:rounded-r max-md:flex max-md:justify-center max-md:items-center"
               aria-label="Add Task"
             >
               <FaPlus />

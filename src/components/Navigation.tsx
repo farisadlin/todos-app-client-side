@@ -25,9 +25,9 @@ const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <nav className="mb-8 px-12 py-4 flex justify-end">
+    <nav className="mb-8 md:px-12 py-4 flex justify-end">
       <Toaster />
-      {isLoggedIn && (
+      {isLoggedIn ? (
         <Link
           href="/logout"
           onClick={handleClickLogout}
@@ -37,7 +37,7 @@ const Navigation: React.FC<NavigationProps> = ({
         >
           Logout
         </Link>
-      )}
+      ) : null}
     </nav>
   );
 };

@@ -6,9 +6,9 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import Spinner from "@/components/Spinner";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import Header from "@/components/Header";
+import AuthLayout from "../layouts/AuthLayout";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -30,14 +30,15 @@ export default function Register() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    registerMutation.mutate({ username, password });
+    toast.promise(registerMutation.mutateAsync({ username, password }), {
+      loading: <Spinner />,
+      success: "Registration successful!",
+      error: (err) => err.response?.data?.error || "Registration failed",
+    });
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <Header title="TODOS APP WITH NODE.JS" />
-      <Toaster position="top-center" reverseOrder={false} />
-      <h1 className="text-4xl font-bold mb-8">Register</h1>
+    <AuthLayout title="Register">
       <form onSubmit={handleSubmit} className="w-full max-w-xs">
         <input
           type="text"
@@ -69,6 +70,6 @@ export default function Register() {
           Login
         </Link>
       </p>
-    </main>
+    </AuthLayout>
   );
 }

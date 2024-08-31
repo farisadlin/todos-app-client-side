@@ -6,10 +6,10 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import Spinner from "@/components/Spinner";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import { setCookie } from "cookies-next";
-import Header from "@/components/Header";
+import AuthLayout from "../layouts/AuthLayout";
 
 interface LoginResponse {
   token: string;
@@ -46,10 +46,7 @@ export default function Login() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <Header title="TODOS APP WITH NODE.JS" />
-      <Toaster position="top-center" reverseOrder={false} />
-      <h1 className="text-4xl font-bold mb-8">Login</h1>
+    <AuthLayout title="Login">
       <form onSubmit={handleLogin} className="w-full max-w-xs">
         <input
           type="text"
@@ -81,6 +78,6 @@ export default function Login() {
           Register
         </Link>
       </p>
-    </main>
+    </AuthLayout>
   );
 }
