@@ -2,19 +2,29 @@
 
 import { useTasks } from "@/hooks/useTasks";
 import TaskList from "@/components/TaskList";
-import Spinner from "@/components/Spinner";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navigation from "./Navigation";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") || "1");
-  const { data, isLoading, error, refetch } = useTasks({ limit: 5, page });
   const [isClient, setIsClient] = useState(false);
+  const [completed, setCompleted] = useState<boolean | null>(null);
+  const [search, setSearch] = useState<string>(
+    searchParams.get("search") || ""
+  );
+
+  const { data, isLoading, error, refetch } = useTasks({
+    limit: 5,
+    page,
+    completed,
+    search,
+  });
 
   useEffect(() => {
     setIsClient(true);
@@ -22,7 +32,11 @@ export default function HomeContent() {
 
   const handlePageChange = (selectedItem: { selected: number }) => {
     const newPage = selectedItem.selected + 1;
-    router.push(`/?page=${newPage}`);
+    router.push(
+      `/?page=${newPage}${search !== "" ? `&search=${search}` : ""}${
+        completed !== null ? `&completed=${completed}` : ""
+      }`
+    );
   };
 
   const addTaskMutation = useMutation({
@@ -95,6 +109,34 @@ export default function HomeContent() {
     }
   };
 
+  const debouncedSearch = useDebounce(search, 300); // 300ms debounce time
+
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, completed]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearch = e.target.value;
+    setSearch(newSearch);
+    router.push(
+      `/?page=${page}${newSearch !== "" ? `&search=${newSearch}` : ""}${
+        completed !== null ? `&completed=${completed}` : ""
+      }`
+    );
+  };
+
+  const handleFilterCompleted = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCompleted =
+      e.target.value === "" ? null : e.target.value === "true";
+    setCompleted(newCompleted);
+    router.push(
+      `/?page=${page}${search !== "" ? `&search=${search}` : ""}${
+        newCompleted !== null ? `&completed=${newCompleted}` : ""
+      }`
+    );
+  };
+
   if (!isClient) {
     return null; // or a loading placeholder
   }
@@ -103,28 +145,28 @@ export default function HomeContent() {
     <>
       <Navigation />
       <div className="max-md:mx-4 max-md:pb-6">
-        {isLoading ? (
-          <Spinner />
-        ) : error ? (
-          <p>Error fetching tasks</p>
-        ) : (
-          <TaskList
-            onAddTask={handleAddTask}
-            onEditTask={handleEditTask}
-            onDeleteTask={handleDeleteTask}
-            onUpdateTaskStatus={handleUpdateTaskStatus}
-            tasks={data?.tasks}
-            pagination={
-              data?.pagination ?? {
-                current_page: page,
-                total_pages: 1,
-                total_items: 1,
-                items_per_page: 1,
-              }
+        <TaskList
+          onAddTask={handleAddTask}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
+          onUpdateTaskStatus={handleUpdateTaskStatus}
+          tasks={data?.tasks}
+          pagination={
+            data?.pagination ?? {
+              current_page: page,
+              total_pages: 1,
+              total_items: 1,
+              items_per_page: 1,
             }
-            onPageChange={handlePageChange}
-          />
-        )}
+          }
+          onPageChange={handlePageChange}
+          onSearchChange={handleSearchChange}
+          onFilterCompleted={handleFilterCompleted}
+          completed={completed}
+          isLoading={isLoading}
+          isError={!!error}
+          searchValue={search}
+        />
       </div>
     </>
   );
