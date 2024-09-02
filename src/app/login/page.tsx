@@ -14,6 +14,7 @@ import Navigation from "@/components/Navigation";
 
 interface LoginResponse {
   token: string;
+  refresh_token: string;
 }
 
 export default function Login() {
@@ -32,6 +33,9 @@ export default function Login() {
     },
     onSuccess: async (data) => {
       setCookie("token", data.token, { maxAge: 60 * 60 * 24 * 7 }); // Set cookie for 7 days
+      setCookie("refresh_token", data.refresh_token, {
+        maxAge: 60 * 60 * 24 * 30,
+      }); // Set cookie for 30 days
       router.push("/");
     },
     onError: (error: Error) => {
