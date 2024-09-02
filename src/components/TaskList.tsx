@@ -23,6 +23,10 @@ interface TaskListProps {
   isLoading: boolean;
   isError: boolean;
   searchValue: string;
+  orderBy: string;
+  sortBy: string;
+  onOrderByChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onSortByChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const TaskList = ({
@@ -39,6 +43,10 @@ const TaskList = ({
   isLoading,
   isError,
   searchValue,
+  orderBy,
+  sortBy,
+  onOrderByChange,
+  onSortByChange,
 }: TaskListProps) => {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
@@ -161,7 +169,7 @@ const TaskList = ({
       </div>
       <hr className="my-5" />
       <div className="flex items-center gap-2 relative max-md:flex-col">
-        <div className="flex items-center border rounded-md p-2 bg-white max-md:w-full">
+        <div className="flex items-center border rounded-md p-2 bg-white w-full">
           <FaSearch className="text-gray-500 mr-2" />
           <input
             type="text"
@@ -189,7 +197,59 @@ const TaskList = ({
             { value: "true", label: "Completed" },
             { value: "false", label: "Not Completed" },
           ]}
-          className="w-full md:w-[200px] text-black"
+          className="w-full md:w-[350px] text-black"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              padding: "2px",
+              borderRadius: "6px",
+            }),
+          }}
+        />
+        <Select
+          value={{
+            value:
+              orderBy === "title"
+                ? sortBy === "asc"
+                  ? "A-Z"
+                  : "Z-A"
+                : sortBy === "asc"
+                ? "Oldest"
+                : "Recent",
+            label:
+              orderBy === "title"
+                ? sortBy === "asc"
+                  ? "A-Z"
+                  : "Z-A"
+                : sortBy === "asc"
+                ? "Oldest"
+                : "Recent",
+          }}
+          onChange={(selectedOption) => {
+            const value = selectedOption?.value || "";
+            if (value === "A-Z" || value === "Z-A") {
+              onOrderByChange({
+                target: { value: "title" },
+              } as React.ChangeEvent<HTMLSelectElement>);
+              onSortByChange({
+                target: { value: value === "A-Z" ? "asc" : "desc" },
+              } as React.ChangeEvent<HTMLSelectElement>);
+            } else {
+              onOrderByChange({
+                target: { value: "created_at" },
+              } as React.ChangeEvent<HTMLSelectElement>);
+              onSortByChange({
+                target: { value: value === "Oldest" ? "asc" : "desc" },
+              } as React.ChangeEvent<HTMLSelectElement>);
+            }
+          }}
+          options={[
+            { value: "Oldest", label: "Oldest" },
+            { value: "Recent", label: "Recent" },
+            { value: "A-Z", label: "A-Z" },
+            { value: "Z-A", label: "Z-A" },
+          ]}
+          className="w-full md:w-[250px] text-black"
           styles={{
             control: (provided) => ({
               ...provided,

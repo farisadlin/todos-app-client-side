@@ -18,12 +18,16 @@ export default function HomeContent() {
   const [search, setSearch] = useState<string>(
     searchParams.get("search") || ""
   );
+  const [orderBy, setOrderBy] = useState<string>("created_at");
+  const [sortBy, setSortBy] = useState<string>("desc");
 
   const { data, isLoading, error, refetch } = useTasks({
     limit: 5,
     page,
     completed,
     search,
+    order_by: orderBy,
+    sort_by: sortBy,
   });
 
   useEffect(() => {
@@ -35,7 +39,7 @@ export default function HomeContent() {
     router.push(
       `/?page=${newPage}${search !== "" ? `&search=${search}` : ""}${
         completed !== null ? `&completed=${completed}` : ""
-      }`
+      }&order_by=${orderBy}&sort_by=${sortBy}`
     );
   };
 
@@ -109,7 +113,7 @@ export default function HomeContent() {
     }
   };
 
-  const debouncedSearch = useDebounce(search, 300); // 300ms debounce time
+  const debouncedSearch = useDebounce(search, 500); // 500ms debounce time
 
   useEffect(() => {
     refetch();
@@ -122,7 +126,7 @@ export default function HomeContent() {
     router.push(
       `/?page=${page}${newSearch !== "" ? `&search=${newSearch}` : ""}${
         completed !== null ? `&completed=${completed}` : ""
-      }`
+      }&order_by=${orderBy}&sort_by=${sortBy}`
     );
   };
 
@@ -133,7 +137,27 @@ export default function HomeContent() {
     router.push(
       `/?page=${page}${search !== "" ? `&search=${search}` : ""}${
         newCompleted !== null ? `&completed=${newCompleted}` : ""
-      }`
+      }&order_by=${orderBy}&sort_by=${sortBy}`
+    );
+  };
+
+  const handleOrderByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newOrderBy = e.target.value;
+    setOrderBy(newOrderBy);
+    router.push(
+      `/?page=${page}${search !== "" ? `&search=${search}` : ""}${
+        completed !== null ? `&completed=${completed}` : ""
+      }&order_by=${newOrderBy}&sort_by=${sortBy}`
+    );
+  };
+
+  const handleSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSortBy = e.target.value;
+    setSortBy(newSortBy);
+    router.push(
+      `/?page=${page}${search !== "" ? `&search=${search}` : ""}${
+        completed !== null ? `&completed=${completed}` : ""
+      }&order_by=${orderBy}&sort_by=${newSortBy}`
     );
   };
 
@@ -166,6 +190,10 @@ export default function HomeContent() {
           isLoading={isLoading}
           isError={!!error}
           searchValue={search}
+          orderBy={orderBy}
+          sortBy={sortBy}
+          onOrderByChange={handleOrderByChange}
+          onSortByChange={handleSortByChange}
         />
       </div>
     </>
