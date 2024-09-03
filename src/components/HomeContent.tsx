@@ -21,11 +21,13 @@ export default function HomeContent() {
   const [orderBy, setOrderBy] = useState<string>("created_at");
   const [sortBy, setSortBy] = useState<string>("desc");
 
+  const debouncedSearch = useDebounce(search, 300); // 300ms debounce time
+
   const { data, isLoading, error, refetch } = useTasks({
     limit: 5,
     page,
     completed,
-    search,
+    search: debouncedSearch,
     order_by: orderBy,
     sort_by: sortBy,
   });
@@ -112,13 +114,6 @@ export default function HomeContent() {
       router.push(`/?page=${newPage}`);
     }
   };
-
-  const debouncedSearch = useDebounce(search, 500); // 500ms debounce time
-
-  useEffect(() => {
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, completed]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearch = e.target.value;
