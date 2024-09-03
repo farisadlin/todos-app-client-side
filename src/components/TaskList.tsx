@@ -173,7 +173,7 @@ const TaskList = ({
           <FaSearch className="text-gray-500 mr-2" />
           <input
             type="text"
-            placeholder="Search tasks"
+            placeholder="Search task title or description ..."
             className="flex-grow outline-none text-black"
             onChange={handleSearchChange}
             value={searchValue}
