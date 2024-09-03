@@ -139,7 +139,7 @@ const TaskList = ({
                 handleAddTask();
               }
             }}
-            className="p-2 border md:border-r-0 rounded-t md:rounded-r-none md:rounded-l text-black flex-grow md:max-w-[270px] md:mb-0"
+            className="p-2 border md:border-r-0 max-md:border-b-0 rounded-t md:rounded-r-none md:rounded-l text-black flex-grow md:max-w-[270px] md:mb-0"
             placeholder="Enter task title"
             required
           />
@@ -303,7 +303,7 @@ const TaskList = ({
                         onKeyDown={(e) => handleKeyDown(e, task)}
                         readOnly={editingTaskId !== task.id}
                         disabled={editingTaskId !== task.id}
-                        className={`md:w-[230px] p-2 border border-r-0 rounded-l text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                        className={`md:w-[230px] p-2 border max-md:border-b-0 max-md:border-t-0 md:border-r-0 md:rounded-l text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
                           task.completed ? "line-through" : ""
                         }`}
                         required
@@ -326,7 +326,7 @@ const TaskList = ({
                         onKeyDown={(e) => handleKeyDown(e, task)}
                         readOnly={editingTaskId !== task.id}
                         disabled={editingTaskId !== task.id}
-                        className={`flex-grow p-2 border text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                        className={`flex-grow max-md:border-b-0 p-2 border text-black disabled:bg-gray-100 disabled:cursor-not-allowed ${
                           task.completed ? "line-through" : ""
                         }`}
                         required
